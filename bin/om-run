@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Call another script at execution time
+# (Useful when having the file at the right location is important,
+# since 'sbatch x' copies x to a new directory before running)
+# 
+# Example Usage:
+# 	sbatch om-run foo.py
+
+echo "om-run: $@"
+$@

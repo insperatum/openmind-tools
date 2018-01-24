@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Show node name and GPU info for the current gpu
+# 
+# Example Usage:
+# 	om-nodeinfo
+
+echo Node: $(/bin/hostname)
+gpu=`env | grep GPU_DEVICE_ORDINAL | cut -d"=" -f2`
+if [ -z "$gpu" ]; then
+  echo GPU: None
+else
+  nvidia-smi -i $gpu
+fi

@@ -1,0 +1,27 @@
+#!/bin/python
+
+# Keep relaunching a script whenever it times out
+# 
+# Example Usage:
+# 	om-repeat sbatch -t 60 foo.sh
+
+import os
+import sys
+from util import util
+import random
+import pipes
+
+cmd, arg, post = util.parse_slurm(sys.argv[1:])
+assert(cmd == "sbatch")
+
+#TODO: escaped args?
+salt = "_" + str(random.randint(1,10000000000))
+if '-J' in arg:
+	arg[arg.index('-J') + 1] += salt
+elif len(filter(lambda x: x[:11]=="--job-name=", arg))>0:
+	idx = filter(lambda x: x[:11]=="--job-name=", arg)[0]
+	arg[idx] += salt
+else:
+	arg = ["-J", post[0] + salt] + arg
+
+os.system(" ".join(["sbatch"] + arg + ["om-run", util.path + "/om-reschedule.py"] + [cmd] + arg + post))
