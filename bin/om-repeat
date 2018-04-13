@@ -10,12 +10,13 @@ import sys
 from util import util
 import random
 import pipes
+import time
 
 cmd, arg, post = util.parse_slurm(sys.argv[1:])
 assert(cmd == "sbatch")
 
 #TODO: escaped args?
-salt = "_" + str(random.randint(1,10000000000))
+salt = "_" +  str(int(time.time()*1000000)) #nanoseconds since epoch
 if '-J' in arg:
 	arg[arg.index('-J') + 1] += salt
 elif len(filter(lambda x: x[:11]=="--job-name=", arg))>0:
