@@ -2,6 +2,7 @@ import sys
 import os
 
 single_args = ['-H', '-h', '-I', '-O', '-s', '-u', '-V', '-v', '-W']
+multi_args = ['-a', '-A', '-B', '-C', '-c', '-d', '-D', '-e', '-F', '-i', '-J', '-L', '-M', '-m', '-N', '-n', '-o', '-p', '-q', '-S', '-t', '-w', '-x', '-g']
 
 path = os.path.dirname(os.path.realpath(__file__))
 def parse_slurm(args):
@@ -15,14 +16,14 @@ def parse_slurm(args):
 	cmd=args[0]
 	awaiting_value = False
 	for idx in range(1, len(args)):
-		if args[idx][:2]=='--':
+		if awaiting_value:
+			awaiting_value=False
+			continue
+		elif args[idx][:2]=='--':
 			continue
 		elif args[idx][0]=='-':
-			if args[idx] not in single_args:
+			if args[idx] in multi_args:
 				awaiting_value=True
-			continue
-		elif awaiting_value:
-			awaiting_value=False
 			continue
 		else:
 			break

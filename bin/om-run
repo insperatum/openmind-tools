@@ -8,4 +8,5 @@
 # 	sbatch om-run foo.py
 
 echo "om-run: $@"
+om-nodeinfo
 $@
