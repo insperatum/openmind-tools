@@ -1,4 +1,9 @@
-#!/bin/python
+#!/bin/bash
+""":"
+python $0 $@
+exit
+":"""
+
 import os
 import sys
 import util

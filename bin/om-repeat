@@ -1,4 +1,8 @@
-#!/bin/python
+#!/bin/bash
+""":"
+python $0 $@
+exit
+":"""
 
 # Keep relaunching a script whenever it times out
 # 
@@ -19,8 +23,8 @@ assert(cmd == "sbatch")
 salt = "_" +  str(int(time.time()*1000000)) #nanoseconds since epoch
 if '-J' in arg:
 	arg[arg.index('-J') + 1] += salt
-elif len(filter(lambda x: x[:11]=="--job-name=", arg))>0:
-	idx = filter(lambda x: x[:11]=="--job-name=", arg)[0]
+elif len([x for x in arg if x[:11]=="--job-name="])>0:
+	idx = [x for x in arg if x[:11]=="--job-name="][0]
 	arg[idx] += salt
 else:
 	arg = ["-J", post[0] + salt] + arg
